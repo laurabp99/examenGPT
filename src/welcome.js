@@ -16,7 +16,7 @@ class Welcome extends HTMLElement {
                     flex-direction: column;
                     justify-content: center;
                     min-height: 75vh;
-                    width: 40%;
+                    width: 100%;
                     }
 
                 .welcome{
