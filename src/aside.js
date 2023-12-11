@@ -10,6 +10,7 @@ class Aside extends HTMLElement {
         this.shadow.innerHTML =
             /*html*/`
             <style>
+
                 aside{
                     background-color: hsl(0, 0%, 0%);
                     max-width: 235px;
@@ -22,7 +23,13 @@ class Aside extends HTMLElement {
                 <user-area-component></user-area-component>
             </aside>
             `
+        let aside = this.shadow.querySelector("aside");
+        let menuButton = this.shadow.querySelector(".menu-button")
 
+        menuButton?.addEventListener("click", () => {
+            aside.classList.toggle("active");
+            menuButton.classList.toggle("active")
+        });
             
         }
     

@@ -17,6 +17,10 @@ aside{
   min-width: 235px;
 }
 
+aside-component.active{
+  width: 0;
+}
+
 main{
   align-items: center;
   background-color: hsl(235, 11%, 23%);
