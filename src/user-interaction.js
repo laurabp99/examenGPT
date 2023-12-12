@@ -22,8 +22,8 @@ class UserInteraction extends HTMLElement {
                 }
                 
                 .message-input{
-                    width: 50%;
-                    transform: translateX(20rem); 
+                    width: 40%;
+                    transform: translateX(36rem); 
                 }
 
                 .message-input .attach-button button{

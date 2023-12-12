@@ -29,7 +29,7 @@ class Aside extends HTMLElement {
                     display: flex;
                     flex-direction: column;
                     position: fixed;
-                    left: 20%;
+                    left: 13%;
                     bottom: 50%;
                     transition: 0.7s;
                 }
