@@ -2,6 +2,8 @@ class Examples extends HTMLElement {
     constructor() {
         super()
         this.shadow = this.attachShadow({ mode: 'open' })
+        document.addEventListener('start-chat',this.unrender.bind(this))
+        document.addEventListener('new-chat',this.render.bind(this))
     }
     connectedCallback() {
         this.render()
@@ -10,6 +12,10 @@ class Examples extends HTMLElement {
         this.shadow.innerHTML =
             /*html*/`
             <style>
+                :host{
+                    width: 100%;
+                }
+
                 .examples{
                     display: flex;
                     flex-wrap: wrap;
@@ -26,7 +32,12 @@ class Examples extends HTMLElement {
                     justify-content: center;
                     padding: 0.5rem 0.75rem;
                     position: relative;
-                    width: 45%;
+                    width: 40%;
+                }
+
+                
+                .example.active {
+                    display: none;
                 }
 
                 .example:hover{
@@ -176,6 +187,9 @@ class Examples extends HTMLElement {
                 `
     }
 
+    unrender(){
+        this.shadow.innerHTML=""
+    }
 }
 
 customElements.define('examples-component', Examples);

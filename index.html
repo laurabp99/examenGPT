@@ -18,13 +18,15 @@
     <script type="module" src="src/app.js"></script>
   </head>
   <body>
-    <aside-component></aside-component>
+    <aside-component>
+      <new-conversation-component slot="content"></new-conversation-component>
+      <history-component slot="content"></history-component>
+      <user-area-component slot="content"></user-area-component>
+    </aside-component>
     <main>
       <welcome-component></welcome-component>
-      <div class="user-interaction">
-        <examples-component></examples-component>
-        <user-interaction-component></user-interaction-component>
-      </div>
+      <examples-component></examples-component>
+      <user-interaction-component></user-interaction-component>
     </main>
   </body>
 </html>

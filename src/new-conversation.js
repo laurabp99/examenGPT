@@ -101,7 +101,7 @@ class NewConversation extends HTMLElement {
                     opacity: 1;
                     visibility: visible;
                 }
-            </style> 
+            </style>
             
             <section class="new-conversations">
                 <div class="new-conversation">
@@ -118,6 +118,14 @@ class NewConversation extends HTMLElement {
                     </div>
             </section>
                 `
+
+            const newChatButton = this.shadow.querySelector('.new-conversation');
+
+            newChatButton.addEventListener("click", (event) => {
+                event.preventDefault();
+                document.dispatchEvent(new CustomEvent('new-chat',
+                ));
+            });    
     }
 
 }

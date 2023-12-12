@@ -2,6 +2,8 @@ class Welcome extends HTMLElement {
     constructor() {
         super()
         this.shadow = this.attachShadow({ mode: 'open' })
+        document.addEventListener('start-chat',this.unrender.bind(this))
+        document.addEventListener('new-chat',this.render.bind(this))
     }
     connectedCallback() {
         this.render()
@@ -25,6 +27,10 @@ class Welcome extends HTMLElement {
                     flex-direction: column;
                     gap: 0.5rem;
                     width: 100%;
+                }
+
+                .welcome.active {
+                    display: none;
                 }
 
                 .welcome-logo{
@@ -66,6 +72,9 @@ class Welcome extends HTMLElement {
         `
     }
 
+    unrender(){
+        this.shadow.innerHTML=""
+    }
 }
 
 customElements.define('welcome-component', Welcome);
