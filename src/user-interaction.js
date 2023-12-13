@@ -163,6 +163,13 @@ class UserInteraction extends HTMLElement {
             attachButton.classList.add('active')
         });
 
+        sendButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            document.dispatchEvent(new CustomEvent('new-prompt',
+            ));
+
+        });
+
         textInput.addEventListener('input', function () {
             if (textInput.value != "") {
                 sendButton.classList.add('active');
@@ -170,7 +177,6 @@ class UserInteraction extends HTMLElement {
                 sendButton.classList.remove('active');
             }
         });
-        
 
         sendButton.addEventListener("click", (event) => {
             event.preventDefault();

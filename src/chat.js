@@ -37,6 +37,14 @@ class Chat extends HTMLElement {
             </div>
             `
     }
+
+    newPrompt(event) {
+        let chat = this.shadow.querySelector(".chat");
+        let message = document.createElement("div");
+        message.textContent = event.detail.prompt;
+        chat.appendChild(message);
+    }
+    
 }
 
 customElements.define('chat-component', Chat);
