@@ -28,23 +28,25 @@ class Chat extends HTMLElement {
                 .chat{
                     position:fixed;
                     top:5%;
-                    left:37%;
-                    width:40%;
+                    left:30%;
                     height:80%;
                     display:none;
                 }
 
                 .chat.active{
                     display:flex;
-                    justify-content: flex-start;
-                    flex-wrap: wrap;
                     flex-direction: column;
                     gap:1rem;
                     color: white;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                    scroll-behavior: smooth;
+                    width: 50%
                 }
 
                 .user-message{
                     display:flex;
+                    overflow-wrap: break-word;
                 }
 
                 .user-prompt{
@@ -59,6 +61,7 @@ class Chat extends HTMLElement {
 
                 .user-prompt-text{
                     gap: 0.3rem;
+                    width:100%;
                 }
 
                 .user-image{
@@ -72,6 +75,7 @@ class Chat extends HTMLElement {
 
                 .model-message{
                     display:flex;
+                    flex-direction: column;
                 }
 
                 .model-prompt{
@@ -128,7 +132,7 @@ class Chat extends HTMLElement {
         userName.textContent = "Tú";
         userPromptText.appendChild(userName);
 
-        const userMessage = document.createElement("div");
+        const userMessage = document.createElement("p");
         userMessage.classList.add('user-message');
         userMessage.textContent = textDetail;
         userPromptText.appendChild(userMessage);
@@ -154,7 +158,7 @@ class Chat extends HTMLElement {
         modelName.textContent = "ChatGPT";
         modelPromptText.appendChild(modelName);
 
-        const modelMessage = document.createElement("div");
+        const modelMessage = document.createElement("p");
         modelMessage.classList.add('model-message');
         modelMessage.textContent = "ola k ase";
         modelPromptText.appendChild(modelMessage);
