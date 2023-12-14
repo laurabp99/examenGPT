@@ -2,6 +2,7 @@ class UserInteraction extends HTMLElement {
     constructor() {
         super()
         this.shadow = this.attachShadow({ mode: 'open' })
+        
     }
     connectedCallback() {
         this.render()
@@ -14,7 +15,6 @@ class UserInteraction extends HTMLElement {
                     width: 100%;
                     position: fixed;
                     bottom: 3%;
-                    transform: 
                 }
 
                 :host.active{
@@ -22,8 +22,8 @@ class UserInteraction extends HTMLElement {
                 }
                 
                 .message-input{
-                    width: 40%;
-                    transform: translateX(36rem); 
+                    width: 45%;
+                    transform: translateX(22rem); 
                 }
 
                 .message-input .attach-button button{
@@ -159,15 +159,26 @@ class UserInteraction extends HTMLElement {
         const fileButton = this.shadow.querySelector(".attach-button");
         const textInput = this.shadow.querySelector('.form-element')
         const sendButton = this.shadow.querySelector('.send-button')
+        let chatText = this.shadow.querySelector('textarea')
         fileButton.addEventListener("click", () => {
             attachButton.classList.add('active')
         });
 
         sendButton.addEventListener("click", (event) => {
             event.preventDefault();
-            document.dispatchEvent(new CustomEvent('new-prompt',
+            document.dispatchEvent(new CustomEvent('new-prompt', {
+                detail: {
+                    prompt: chatText.value
+                }
+            }));
+        });
+
+        sendButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            document.dispatchEvent(new CustomEvent('start-chat',
             ));
 
+            this.render();
         });
 
         textInput.addEventListener('input', function () {
@@ -177,15 +188,6 @@ class UserInteraction extends HTMLElement {
                 sendButton.classList.remove('active');
             }
         });
-
-        sendButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            document.dispatchEvent(new CustomEvent('start-chat',
-            ));
-            
-            this.render();
-        });
-
 
     };
 

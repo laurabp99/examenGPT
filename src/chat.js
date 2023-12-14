@@ -2,7 +2,22 @@ class Chat extends HTMLElement {
     constructor() {
         super()
         this.shadow = this.attachShadow({ mode: 'open' })
+        document.addEventListener('new-prompt', this.newPrompt.bind(this));
+        document.addEventListener('start-chat', this.startChat.bind(this));
+        document.addEventListener('new-chat', this.newChat.bind(this));
     }
+
+    startChat() {
+        let chat = this.shadow.querySelector(".chat");
+        chat.classList.add("active");
+    }
+
+    newChat() {
+        let chat = this.shadow.querySelector(".chat");
+        chat.classList.remove("active");
+        this.render();
+    }
+
     connectedCallback() {
         this.render()
     }
@@ -10,41 +25,141 @@ class Chat extends HTMLElement {
         this.shadow.innerHTML =
             /*html*/`
             <style>
-                .chatbox-user{
-                    display:flex;
-                    z-index: 1003;
-                    position: absolute;
+                .chat{
+                    position:fixed;
+                    top:5%;
+                    left:37%;
+                    width:40%;
+                    height:80%;
+                    display:none;
                 }
 
-                .user-name{
-                    color: white
+                .chat.active{
+                    display:flex;
+                    justify-content: flex-start;
+                    flex-wrap: wrap;
+                    flex-direction: column;
+                    gap:1rem;
+                    color: white;
+                }
+
+                .user-message{
+                    display:flex;
                 }
 
                 .user-prompt{
-                    color: white
+                    color: white;
+                    display: flex;
+                    gap: 1rem;
+                }
+
+                .user-name{
+                    display:flex;
+                }
+
+                .user-prompt-text{
+                    gap: 0.3rem;
+                }
+
+                .user-image{
+                    height: auto;
+                }
+
+                .user-image img{
+                    width:40px;
+                    height:40px;
+                }
+
+                .model-message{
+                    display:flex;
+                }
+
+                .model-prompt{
+                    color: white;
+                    display: flex;
+                    gap: 1rem;
+                }
+
+                .model-name{
+                    display:flex;
+                }
+
+                .model-prompt-text{
+                    gap: 0.3rem;
+                }
+
+                .model-image{
+                    height: auto;
+                }
+
+                .model-image img{
+                    width:40px;
+                    height:40px;
                 }
             </style>
             
-            <div class="chatbox-user">
-                <div class="user-image"><img src="images/user-avatar.png" alt="avatar de usuario"></div>
-                <div class="user-name">Tú</div>
-                <div class="user-prompt">test</div>
-            </div>
-            <div class="chatbox-answer">
-                <div class="chat-image"></div>
-                <div class="chat-name"></div>
-                <div class="chat-answer"></div>
+            <div class="chat">
             </div>
             `
     }
 
     newPrompt(event) {
-        let chat = this.shadow.querySelector(".chat");
-        let message = document.createElement("div");
-        message.textContent = event.detail.prompt;
-        chat.appendChild(message);
+        const textDetail = event.detail.prompt;
+
+        const chat = this.shadow.querySelector(".chat");
+
+//---------USER
+
+        const userPrompt = document.createElement('div');
+        userPrompt.classList.add('user-prompt');
+        chat.appendChild(userPrompt);
+
+        const userImage = document.createElement('div');
+        userImage.classList.add('user-image');
+        userImage.innerHTML = '<img src="images/user-avatar.png" alt="avatar de usuario">';
+        userPrompt.appendChild(userImage);
+
+        const userPromptText = document.createElement("div");
+        userPromptText.classList.add('user-prompt-text');
+        userPrompt.appendChild(userPromptText);
+
+        const userName = document.createElement("div");
+        userName.classList.add('user-name');
+        userName.textContent = "Tú";
+        userPromptText.appendChild(userName);
+
+        const userMessage = document.createElement("div");
+        userMessage.classList.add('user-message');
+        userMessage.textContent = textDetail;
+        userPromptText.appendChild(userMessage);
+
+//--------MODELO
+
+
+        const modelPrompt = document.createElement('div');
+        modelPrompt.classList.add('model-prompt');
+        chat.appendChild(modelPrompt);
+
+        const modelImage = document.createElement('div');
+        modelImage.classList.add('model-image');
+        modelImage.innerHTML = '<img src="images/ChatGPT_logo.svg.png" alt="avatar de usuario">';
+        modelPrompt.appendChild(modelImage);
+
+        const modelPromptText = document.createElement("div");
+        modelPromptText.classList.add('prompt-text');
+        modelPrompt.appendChild(modelPromptText);
+
+        const modelName = document.createElement("div");
+        modelName.classList.add('model-name');
+        modelName.textContent = "ChatGPT";
+        modelPromptText.appendChild(modelName);
+
+        const modelMessage = document.createElement("div");
+        modelMessage.classList.add('model-message');
+        modelMessage.textContent = "ola k ase";
+        modelPromptText.appendChild(modelMessage);
     }
-    
+
 }
 
 customElements.define('chat-component', Chat);
