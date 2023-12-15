@@ -2,28 +2,21 @@ class UserInteraction extends HTMLElement {
     constructor() {
         super()
         this.shadow = this.attachShadow({ mode: 'open' })
-        
+
     }
     connectedCallback() {
         this.render()
     }
+
     render() {
         this.shadow.innerHTML =
             /*html*/`
             <style>
                 :host{
                     width: 100%;
-                    position: fixed;
-                    bottom: 3%;
-                }
-
-                :host.active{
-                    display: none;
                 }
                 
                 .message-input{
-                    width: 45%;
-                    transform: translateX(32rem); 
                 }
 
                 .message-input .attach-button button{
@@ -129,6 +122,39 @@ class UserInteraction extends HTMLElement {
                     visibility: visible;
                 }
 
+                .send-button{
+                    display: none;
+                }
+
+                .send-button.visible{
+                    display:block;
+                }  
+
+                .stop-button{
+                    display: none;
+                }
+
+                .stop-button button{
+                    border-radius: 100%;
+                    border: none;
+                    width: 28px;
+                    cursor:pointer;
+                    vertical-align: middle;
+                    border: none;
+                    padding: 0;
+                    margin: 0;
+                    
+                }
+
+                .stop-button button svg {
+                    position: relative;
+                    top: 1px;
+                }
+
+                .stop-button.visible{
+                    display: block;
+                }
+
             </style>
             
             <section class="message-input">
@@ -144,7 +170,7 @@ class UserInteraction extends HTMLElement {
                 <div class="form-element">
                     <textarea placeholder="Message ChatGPT..."></textarea>
                 </div>
-                <div class="send-button">
+                <div class="send-button visible">
                     <button>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-white dark:text-black">
                             <path d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -152,37 +178,52 @@ class UserInteraction extends HTMLElement {
                     <span class="tooltiptext">Enviar mensaje</span>                  
                     </button>
                 </div>
+                <div class="stop-button">
+                    <button>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="hsl(235, 11%, 23%)" class="text-white dark:text-black">
+                            <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4M9,9V15H15V9" />
+                        </svg>  
+                    </button>
+                </div>
             </form>
         </section>
         `
 
         const fileButton = this.shadow.querySelector(".attach-button");
-        const textInput = this.shadow.querySelector('.form-element')
         const sendButton = this.shadow.querySelector('.send-button')
-        let chatText = this.shadow.querySelector('textarea')
+        const stopButton = this.shadow.querySelector('.stop-button');
+        const chatText = this.shadow.querySelector('textarea')
+
+
         fileButton.addEventListener("click", () => {
             attachButton.classList.add('active')
         });
 
         sendButton.addEventListener("click", (event) => {
+
             event.preventDefault();
+
             document.dispatchEvent(new CustomEvent('new-prompt', {
                 detail: {
                     prompt: chatText.value
                 }
             }));
+
+            document.dispatchEvent(new CustomEvent('start-chat'))
+
+            sendButton.classList.remove('visible');
+            stopButton.classList.add('visible');
+            chatText.value = "";
         });
 
-        sendButton.addEventListener("click", (event) => {
+        stopButton.addEventListener("click", (event) => {
             event.preventDefault();
-            document.dispatchEvent(new CustomEvent('start-chat',
-            ));
-
-            this.render();
+            stopButton.classList.remove('visible');
+            sendButton.classList.add('visible');
         });
 
-        textInput.addEventListener('input', function () {
-            if (textInput.value != "") {
+        chatText.addEventListener('input', function () {
+            if (chatText.value != "") {
                 sendButton.classList.add('active');
             } else {
                 sendButton.classList.remove('active');

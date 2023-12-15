@@ -2,117 +2,31 @@ class Chat extends HTMLElement {
     constructor() {
         super()
         this.shadow = this.attachShadow({ mode: 'open' })
-        document.addEventListener('new-prompt', this.newPrompt.bind(this));
-        document.addEventListener('start-chat', this.startChat.bind(this));
-        document.addEventListener('new-chat', this.newChat.bind(this));
+        document.addEventListener('start-chat', this.handleStartChat.bind(this));
+        document.addEventListener('new-chat', this.handleNewChat.bind(this));
+        document.addEventListener('new-prompt', this.handleNewPrompt.bind(this));
+
     }
 
-    startChat() {
+    handleStartChat() {
         let chat = this.shadow.querySelector(".chat");
         chat.classList.add("active");
     }
 
-    newChat() {
+    handleNewChat() {
         let chat = this.shadow.querySelector(".chat");
         chat.classList.remove("active");
         this.render();
     }
 
-    connectedCallback() {
-        this.render()
-    }
-    render() {
-        this.shadow.innerHTML =
-            /*html*/`
-            <style>
-                .chat{
-                    position:fixed;
-                    top:5%;
-                    left:30%;
-                    height:80%;
-                    display:none;
-                }
-
-                .chat.active{
-                    display:flex;
-                    flex-direction: column;
-                    gap:1rem;
-                    color: white;
-                    overflow-y: auto;
-                    overflow-x: hidden;
-                    scroll-behavior: smooth;
-                    width: 50%
-                }
-
-                .user-message{
-                    display:flex;
-                    overflow-wrap: break-word;
-                }
-
-                .user-prompt{
-                    color: white;
-                    display: flex;
-                    gap: 1rem;
-                }
-
-                .user-name{
-                    display:flex;
-                }
-
-                .user-prompt-text{
-                    gap: 0.3rem;
-                    width:100%;
-                }
-
-                .user-image{
-                    height: auto;
-                }
-
-                .user-image img{
-                    width:40px;
-                    height:40px;
-                }
-
-                .model-message{
-                    display:flex;
-                    flex-direction: column;
-                }
-
-                .model-prompt{
-                    color: white;
-                    display: flex;
-                    gap: 1rem;
-                }
-
-                .model-name{
-                    display:flex;
-                }
-
-                .model-prompt-text{
-                    gap: 0.3rem;
-                }
-
-                .model-image{
-                    height: auto;
-                }
-
-                .model-image img{
-                    width:40px;
-                    height:40px;
-                }
-            </style>
-            
-            <div class="chat">
-            </div>
-            `
+    handleNewPrompt(event) {
+        this.newUserMessage(event);
+        this.newModelMessage(event);
     }
 
-    newPrompt(event) {
+    newUserMessage(event) {
         const textDetail = event.detail.prompt;
-
         const chat = this.shadow.querySelector(".chat");
-
-//---------USER
 
         const userPrompt = document.createElement('div');
         userPrompt.classList.add('user-prompt');
@@ -136,9 +50,10 @@ class Chat extends HTMLElement {
         userMessage.classList.add('user-message');
         userMessage.textContent = textDetail;
         userPromptText.appendChild(userMessage);
+    }
 
-//--------MODELO
-
+    newModelMessage(event) {
+        const chat = this.shadow.querySelector(".chat");
 
         const modelPrompt = document.createElement('div');
         modelPrompt.classList.add('model-prompt');
@@ -150,7 +65,7 @@ class Chat extends HTMLElement {
         modelPrompt.appendChild(modelImage);
 
         const modelPromptText = document.createElement("div");
-        modelPromptText.classList.add('prompt-text');
+        modelPromptText.classList.add('model-prompt-text');
         modelPrompt.appendChild(modelPromptText);
 
         const modelName = document.createElement("div");
@@ -158,11 +73,151 @@ class Chat extends HTMLElement {
         modelName.textContent = "ChatGPT";
         modelPromptText.appendChild(modelName);
 
-        const modelMessage = document.createElement("p");
+        const modelMessage = document.createElement("div");
         modelMessage.classList.add('model-message');
-        modelMessage.textContent = "ola k ase";
         modelPromptText.appendChild(modelMessage);
     }
+
+
+    connectedCallback() {
+        this.render()
+    }
+
+    render() {
+        this.shadow.innerHTML =
+            /*html*/`
+            <style>
+
+                :host{
+                    width: 100%;
+                }
+
+                .chat{
+                    height:80vh;
+                    display:none;
+                }
+
+                .chat.active{
+                    display:flex;
+                    flex-direction: column;
+                    gap:1rem;
+                    color: white;
+                    height:90vh;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                    scroll-behavior: smooth;
+                    width: 100%;
+                }
+
+                .chat::-webkit-scrollbar{
+                    background: transparent; 
+                    width: 0;
+                }
+                
+                .chat:hover::-webkit-scrollbar{
+                    width: 5px; 
+                }
+                
+                .chat:hover::-webkit-scrollbar-thumb{
+                    background-color: hsl(0, 0%, 53%); 
+                    border-radius: 1rem;
+                    max-height: 15%;
+                }
+                
+                .chat:hover::-webkit-scrollbar-thumb:hover{
+                    background-color: hsl(0, 0%, 78%); 
+                }
+
+                .user-message{
+                    display:flex;
+                    overflow-wrap: break-word;
+                }
+
+                .user-prompt{
+                    margin-top: 3rem;
+                    color: white;
+                    display: flex;
+                    gap: 1rem;
+                }
+
+                .user-name{
+                    display:flex;
+                }
+
+                .user-prompt-text{
+                    gap: 0.3rem;
+                    width:100%;
+                }
+
+                .user-image{
+                    height: auto;
+                }
+
+                .user-image img{
+                    width:40px;
+                    height:40px;
+                }
+
+                @keyframes scaleAnimation {
+                    0% {
+                        width: 8px;
+                        height: 8px;
+                        transform: scale(0.8);
+                    }
+                    50% {
+                        width: 12px;
+                        height: 12px;
+                        transform: scale(1.2);
+                    }
+                    100% {
+                        width: 8px;
+                        height: 8px;
+                        transform: scale(0.8);
+                    }
+                }
+
+                .model-message{
+                    border-radius: 50%;
+                    background-color: white;
+                    display:flex;
+                    flex-direction: column;
+                    width:10px;
+                    height:10px;
+                    animation: scaleAnimation 1.5s infinite;
+                    transform-origin: center;
+                }
+
+                .model-prompt{
+                    color: white;
+                    display: flex;
+                    gap: 1rem;
+                }
+
+                .model-name{
+                    display:flex;
+                    gap: 0.3rem;
+                }
+                
+                .model-prompt-text{
+                    display:grid;
+                }
+
+
+                .model-image{
+                    height: auto;
+                }
+
+                .model-image img{
+                    width:40px;
+                    height:40px;
+                }
+            </style>
+            
+            <div class="chat">
+            </div>
+            `
+    }
+
 
 }
 

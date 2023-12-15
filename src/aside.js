@@ -16,27 +16,27 @@ class Aside extends HTMLElement {
                     max-width: 235px;
                     min-width: 235px;
                     height: 100%;
-                    transition: 0.7s;
+                    transition: 0.6s;
                 }
 
                 aside.active{
                     max-width: 0;
                     min-width: 0;
-                    transition: 0.7s;
+                    transition: 0.6s;
                 }
 
                 .hide-aside-button{
                     display: flex;
                     flex-direction: column;
                     position: fixed;
-                    left: 13%;
+                    left: 250px;
                     bottom: 50%;
-                    transition: 0.7s;
+                    transition: 0.6s;
                 }
 
                 .hide-aside-button.active{
                     left: 2%;
-                    transition: 0.7s;
+                    transition: 0.6s;
                 }
 
                 span{
@@ -49,19 +49,23 @@ class Aside extends HTMLElement {
                 .span-top{
                     transform-origin: bottom left;
                     transform: rotate(20deg) translateY(2px);
+                    transition: 0.6s;
                 }
 
                 .span-bottom{
                     transform-origin: top right;
                     transform: rotate(-20deg) translateY(-2px);
+                    transition: 0.6s;
                 }
 
                 .span-top.active{
                     transform: translateY(2px);
+                    transition: 0.6s;
                 }
 
                 .span-bottom.active{
                     transform: translateY(-2px);
+                    transition: 0.6s;
                 }
 
             </style>    

@@ -17,10 +17,10 @@ class Examples extends HTMLElement {
                 }
 
                 .examples{
-                    display: flex;
-                    flex-wrap: wrap;
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
                     gap: 0.5rem;
-                    justify-content: center;
+                    margin-bottom: 1rem;
                 }
 
                 .example{
@@ -32,7 +32,6 @@ class Examples extends HTMLElement {
                     justify-content: center;
                     padding: 0.5rem 0.75rem;
                     position: relative;
-                    width: 40%;
                 }
 
                 
