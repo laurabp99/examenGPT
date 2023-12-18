@@ -76,6 +76,8 @@ class Chat extends HTMLElement {
         const modelMessage = document.createElement("div");
         modelMessage.classList.add('model-message');
         modelPromptText.appendChild(modelMessage);
+
+        chat.scrollTop = chat.scrollHeight;
     }
 
 
@@ -100,7 +102,6 @@ class Chat extends HTMLElement {
                 .chat.active{
                     display:flex;
                     flex-direction: column;
-                    gap:1rem;
                     color: white;
                     height:90vh;
                     overflow-y: auto;
@@ -165,9 +166,9 @@ class Chat extends HTMLElement {
                         transform: scale(0.8);
                     }
                     50% {
-                        width: 12px;
-                        height: 12px;
-                        transform: scale(1.2);
+                        width: 10px;
+                        height: 10px;
+                        transform: scale(1);
                     }
                     100% {
                         width: 8px;
