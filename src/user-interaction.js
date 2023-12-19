@@ -4,9 +4,28 @@ class UserInteraction extends HTMLElement {
         this.shadow = this.attachShadow({ mode: 'open' })
 
     }
+
+    static get observedAttributes() {
+        return ['state']
+    }
+
     connectedCallback() {
         this.render()
     }
+
+    attributeChangedCallback (name, oldValue, newValue) {
+        if (name === 'state') {
+            if (newValue === 'stop') {
+                this.shadow.querySelector('.send-button').classList.remove('visible');
+                this.shadow.querySelector('.stop-button').classList.add('visible');
+            }
+            if (newValue === 'send') {
+                this.shadow.querySelector('.send-button').classList.add('visible');
+                this.shadow.querySelector('.stop-button').classList.remove('visible');
+            }
+        }
+    }
+    
 
     render() {
         this.shadow.innerHTML =
@@ -209,17 +228,14 @@ class UserInteraction extends HTMLElement {
                 }
             }));
 
-            document.dispatchEvent(new CustomEvent('start-chat'))
-
-            sendButton.classList.remove('visible');
-            stopButton.classList.add('visible');
+            document.dispatchEvent(new CustomEvent('start-chat'));
+            this.setAttribute('state','stop')
             chatText.value = "";
         });
 
         stopButton.addEventListener("click", (event) => {
             event.preventDefault();
-            stopButton.classList.remove('visible');
-            sendButton.classList.add('visible');
+            this.setAttribute('state','send')
         });
 
         chatText.addEventListener('input', function () {
